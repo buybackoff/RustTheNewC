@@ -2,4 +2,5 @@
 members = [
     "corelib",
     "lmdb-sys",
+    "blosc-sys",
 ]

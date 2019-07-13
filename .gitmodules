@@ -1,3 +1,7 @@
 [submodule "src/rust/lmdb-sys/lmdb"]
 	path = src/rust/lmdb-sys/lmdb
 	url = https://github.com/LMDB/lmdb.git
+[submodule "src/rust/blosc-sys/c-blosc"]
+	path = src/rust/blosc-sys/c-blosc
+	url = https://github.com/Spreads/c-blosc.git
+	branch = spreads
