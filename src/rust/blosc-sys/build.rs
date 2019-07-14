@@ -1,8 +1,6 @@
 extern crate cmake;
 extern crate bindgen;
 
-use std::env;
-
 fn main() {
     // TODO deduplicate code, only MinGW line for Windows, check if on MSVC
     if cfg!(windows) {
@@ -78,7 +76,7 @@ fn main() {
     //     .expect("Unable to generate bindings");
 
     // // Write the bindings to the $OUT_DIR/bindings.rs file.
-    // let out_path = std::path::PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap());
+    // let out_path = std::path::PathBuf::from(std::env::var("CARGO_MANIFEST_DIR").unwrap());
     // bindings
     //     .write_to_file(out_path.join("src/bindings.rs"))
     //     .expect("Couldn't write bindings!");
