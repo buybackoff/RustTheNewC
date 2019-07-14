@@ -4,4 +4,5 @@ members = [
     "lmdb-sys",
     "blosc-sys",
     "sqlite-sys",
+    "sandbox"
 ]

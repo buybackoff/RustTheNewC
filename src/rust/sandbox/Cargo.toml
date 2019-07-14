@@ -1,0 +1,10 @@
+[package]
+name = "sandbox"
+version = "0.1.0"
+authors = ["Victor Baybekov <vbaybekov@gmail.com>"]
+edition = "2018"
+publish = false
+
+[dependencies]
+corelib = { version = "*", path = "../corelib" }
+libc = { version = "0.2"}
