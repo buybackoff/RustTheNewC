@@ -3,6 +3,29 @@ extern crate lmdb_sys;
 extern crate sqlite_sys;
 
 use libc::*;
+use std::ffi::CString;
+
+#[no_mangle]
+pub extern "C" fn native_versions_get() -> *mut c_char {
+    let s = format!("LMDB: {}\nBlosc: {}\nSQLite: {}", lmdb_version(), blosc_version(), sqlite_version());
+    let cs = CString::new(s).unwrap();
+    cs.into_raw()
+}
+
+#[no_mangle]
+pub extern "C" fn native_versions_free(c: *mut c_char) {
+    if c.is_null() {
+        return;
+    }
+    // CString is dropped automatically when does out of scope
+    unsafe { CString::from_raw(c); }
+
+    // Print diagnostics in debug build
+    if cfg!(debug_assertions) {
+        println!("Rust string is dropped");
+    }
+}
+
 
 pub fn lmdb_version() -> String {
     unsafe {
@@ -30,6 +53,17 @@ pub fn sqlite_version() -> String {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn native_versions_get_works() {
+        unsafe{
+            let nv = super::native_versions_get();
+            let cs = std::ffi::CString::from_raw(nv);
+            assert_eq!(cs.to_str().unwrap(), "LMDB: 0.9.70\nBlosc: 1.15.2.dev\nSQLite: 3.29.0");
+            std::mem::forget(cs);
+            super::native_versions_free(nv);
+        }
+    }
+
     #[test]
     fn lmdb_works() {
         assert_eq!(super::lmdb_version(), "0.9.70");
