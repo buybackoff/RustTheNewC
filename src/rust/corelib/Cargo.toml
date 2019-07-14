@@ -6,9 +6,10 @@ edition = "2018"
 publish = false
 
 [lib]
-crate-type = ["cdylib","staticlib"]
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+crate-type = ["cdylib","rlib"] # Need rlib for sandbox to work
 
 [dependencies]
-rusqlite = "0.19.0"
+lmdb-sys = { version = "*", path = "../lmdb-sys" }
+blosc-sys = { version = "*", path = "../blosc-sys" }
+sqlite-sys = { version = "*", path = "../sqlite-sys" }
+libc = { version = "0.2"}
