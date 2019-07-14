@@ -364,3 +364,7 @@ healthchecksdb
 
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
+
+
+sqlite3.c
+sqlite3.h
