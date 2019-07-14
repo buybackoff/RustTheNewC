@@ -15,6 +15,23 @@
       "cwd": "${workspaceFolder}",
       "environment": [],
       "externalConsole": false
+    },
+    {
+        "type": "lldb",
+        "request": "launch",
+        "name": "Rust Sandbox Container",
+        "cargo": {
+            "args": [
+                "build",
+                "--bin=sandbox",
+                "--package=sandbox",
+                "--manifest-path=Cargo.toml"
+            ],
+            "filter": {
+                "kind": "bin"
+            }
+        },
+        "args": []
     }
   ]
 }
