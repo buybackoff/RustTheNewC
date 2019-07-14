@@ -1,10 +1,9 @@
 extern crate cc;
 
 use std::env;
-use std::path::PathBuf;
 
 fn main() {
-    let mut lmdb: PathBuf = PathBuf::from(&env::var("CARGO_MANIFEST_DIR").unwrap());
+    let mut lmdb = std::path::PathBuf::from(&env::var("CARGO_MANIFEST_DIR").unwrap());
     lmdb.push("lmdb");
     lmdb.push("libraries");
     lmdb.push("liblmdb");
@@ -17,23 +16,23 @@ fn main() {
         .static_crt(true)
         .compile("liblmdb.a");
 
-    let bindings = bindgen::Builder::default()
-        .header("wrapper.h")
-        .generate_comments(true)
-        .use_core()
-        .ctypes_prefix("libc")
-        .whitelist_function("mdb_.*") // it adds recursively all used types so the next line in this case changes nothing for this particular case
-        .whitelist_type("mdb_.*")
-        .prepend_enum_name(false)
-        .constified_enum_module("MDB_cursor_op") // allows access to enum values as MDB_cursor_op.MDB_NEXT
-        .generate()
-        .expect("Unable to generate bindings");
+    // let bindings = bindgen::Builder::default()
+    //     .header("wrapper.h")
+    //     .generate_comments(true)
+    //     .use_core()
+    //     .ctypes_prefix("libc")
+    //     .whitelist_function("mdb_.*") // it adds recursively all used types so the next line in this case changes nothing for this particular case
+    //     .whitelist_type("mdb_.*")
+    //     .prepend_enum_name(false)
+    //     .constified_enum_module("MDB_cursor_op") // allows access to enum values as MDB_cursor_op.MDB_NEXT
+    //     .generate()
+    //     .expect("Unable to generate bindings");
 
-    // Write the bindings to src folder to make rls autocomplete work.
-    let out_path = PathBuf::from("src");
-    bindings
-        .write_to_file(out_path.join("bindings.rs"))
-        .expect("Couldn't write bindings!");
+    // // Write the bindings to src folder to make rls autocomplete work.
+    // let out_path = std::path::PathBuf::from("src");
+    // bindings
+    //     .write_to_file(out_path.join("bindings.rs"))
+    //     .expect("Couldn't write bindings!");
 
     // Tell cargo to tell rustc to link the lmdb library.
     println!("cargo:rustc-link-lib=static=lmdb");

@@ -2,26 +2,8 @@ extern crate cmake;
 extern crate bindgen;
 
 use std::env;
-use std::path::PathBuf;
 
 fn main() {
-    let bindings = bindgen::Builder::default()
-        .header("wrapper.h")
-        .use_core()
-        .ctypes_prefix("libc")
-        .whitelist_function(".*compress.*")
-        .whitelist_function(".*shuffle.*")
-        .whitelist_function(".*threads.*")
-        .whitelist_function(".*version.*")
-        .generate()
-        .expect("Unable to generate bindings");
-
-    // Write the bindings to the $OUT_DIR/bindings.rs file.
-    let out_path = PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap());
-    bindings
-        .write_to_file(out_path.join("src/bindings.rs"))
-        .expect("Couldn't write bindings!");
-
     // TODO deduplicate code, only MinGW line for Windows, check if on MSVC
     if cfg!(windows) {
         if cfg!(target_env = "gnu") {
@@ -58,7 +40,7 @@ fn main() {
                 .define("PREFER_EXTERNAL_SNAPPY", "OFF")
                 .define("PREFER_EXTERNAL_ZLIB", "OFF")
                 .define("PREFER_EXTERNAL_ZSTD", "OFF")
-                // .define("CMAKE_BUILD_TYPE", "Release") - cmake-rs does the right this depending on opt-level and debug/release
+                // .define("CMAKE_BUILD_TYPE", "Release") - cmake-rs does this right depending on opt-level and debug/release
                 .static_crt(true)
                 .build();
             println!("cargo:rustc-link-search=native={}/lib", dst.display());
@@ -83,4 +65,21 @@ fn main() {
         println!("cargo:rustc-link-search=native={}/lib", dst.display());
         println!("cargo:rustc-link-lib=static=blosc");
     }
+
+    // let bindings = bindgen::Builder::default()
+    //     .header("wrapper.h")
+    //     .use_core()
+    //     .ctypes_prefix("libc")
+    //     .whitelist_function(".*compress.*")
+    //     .whitelist_function(".*shuffle.*")
+    //     .whitelist_function(".*threads.*")
+    //     .whitelist_function(".*version.*")
+    //     .generate()
+    //     .expect("Unable to generate bindings");
+
+    // // Write the bindings to the $OUT_DIR/bindings.rs file.
+    // let out_path = std::path::PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap());
+    // bindings
+    //     .write_to_file(out_path.join("src/bindings.rs"))
+    //     .expect("Couldn't write bindings!");
 }
