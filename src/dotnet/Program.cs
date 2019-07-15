@@ -33,17 +33,8 @@ namespace RustTheNewC
             {
                 return null;
             }
-
-            var i = 0;
-            while (Marshal.ReadByte(ptr, i) != 0)
-            {
-                i++;
-            }
-
-            var bytes = new byte[i];
-            Marshal.Copy(ptr, bytes, 0, i);
-
-            return Encoding.UTF8.GetString(bytes, 0, i);
+            
+            return Marshal.PtrToStringAuto(ptr);
         }
     }
 }
